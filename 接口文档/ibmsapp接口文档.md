@@ -92,8 +92,11 @@
 	//用户名 -- String
 	"user_name" : “系统管理员”,
 	
-	//密码 -- String
-	"password" : “suntek”,
+	//部门号 -- String
+	"dept_code" : “01”,
+	
+	//部门名称 --String
+	"dept_name" : "天鹅湖花园"
 }
 
 ```
@@ -104,6 +107,12 @@
 {
     //id -- String
     "id": "454",
+    
+    //设备国标编码
+    "device_id" : "4400001310001"
+
+	//nvr/cvr设备国标编码
+	"parent_id" : "4400001110001"
 
 	//通道号 -- String
     "channel": "33",
@@ -130,8 +139,25 @@
     "type": "1",
     
     //nvr 用户名 -- String
-    "user_name": "admin"
+    "user_name": "admin",
 
+	//是否在线
+	"is_used" : "0",
+	
+	//播放时间 --String
+	“play_time” : "2341312",
+	
+	//区域名称 --String
+	“org_name” : "天鹅湖花园",
+	
+	//型号
+	"vendor_name" : "海康",
+	
+	//预览图
+	"photo_base64" : "dskjfowijreoj",
+	
+	//播放次数
+	"play_count" : "100"
 }
 
 ```
@@ -154,6 +180,9 @@
    
     //父节点代码  -- String
     "parent_id": "1"
+    
+    //国标编码节点
+    "node_flag" : "445230210290"
 }
 
 ```
@@ -170,6 +199,25 @@
    	
    	//结束时间  -- String
     "end_time": "2017-07-27T10:28:44"
+}
+
+```
+
+###(5)版本信息- Version
+
+```
+{
+	//是否升级  -- String
+    "is_update": "1",
+   
+   	//版本号  -- String
+    "version_num": "1.1.3",
+   	
+   	//更新内容 -- String
+    "update_content": "修改了重要bug"，
+    
+    //下载地址 --String
+    "download_address" : "http://www.baidu.com"
 }
 
 ```
@@ -191,6 +239,20 @@
 | key | value类型 | 说明 | 示例 |
 | --- |:---:| ---:| -----:| -----:|
 | user| User| 用户实体 | 参`数据类型 - 用户`| 
+
+#### 2. 修改密码：user.change_password
+> 请求参数
+
+| 参数名 | 类型 | 是否必须 | 说明 | 示例 |
+| --- |:---:| ---:| -----:| -----:|
+| user_code | String | Y | 用户名 | "admin" |
+| new_password | String | Y | 新密码 | "suntek"|
+| old_password | String | Y | 旧密码 | "13788798"|
+
+
+> 应答结果
+
+无
 
 ###(二)摄像机
 #### 1. 摄像机列表：camera.list
@@ -225,6 +287,9 @@
 | 参数名 | 类型 | 是否必须 | 说明 | 示例 |
 | --- |:---:| ---:| -----:| -----:|
 | page | String | Y | 页数 | "1"|
+| user_code | String | Y | 用户码 | "admin"|
+
+
 
 > 应答结果
 
@@ -249,6 +314,33 @@
 | camera_list| List&lt;Camera&gt;| 摄像机列表 | 参`数据类型 - 摄像机`| 
 | total_page| int| 总页数 | `1`| 
 
+#### 5. 删除历史播放：camera.del_history
+> 请求参数
+
+| 参数名 | 类型 | 是否必须 | 说明 | 示例 |
+| --- |:---:| ---:| -----:| -----:|
+| camera_id | String | Y | 摄像机id | "100" |
+| user_code | String | Y | 用户代码 | "admin" |
+
+
+> 应答结果
+
+无
+
+#### 6. 获取摄像机信息：camera.info
+> 请求参数
+
+| 参数名 | 类型 | 是否必须 | 说明 | 示例 |
+| --- |:---:| ---:| -----:| -----:|
+| camera_id | String | Y | 摄像机id | "100" |
+
+
+> 应答结果
+
+| key | value类型 | 说明 | 示例 |
+| --- |:---:| ---:| -----:| -----:|
+| camera_list| Camera | 摄像机实体 | 参`数据类型 - 摄像机`| 
+
 ###(三)区域
 #### 1. 区域列表：area.list
 
@@ -257,6 +349,34 @@
 | 参数名 | 类型 | 是否必须 | 说明 | 示例 |
 | --- |:---:| ---:| -----:| -----:|
 | parent_id | String | Y | 父id | "01"|
+
+
+> 应答结果
+
+| key | value类型 | 说明 | 示例 |
+| --- |:---:| ---:| -----:| -----:|
+| area_list| List&lt;Area&gt;| 区域列表 | 参`数据类型 - 区域`| 
+
+#### 2. 获取区域根节点：area.root
+
+> 请求参数
+
+无
+
+
+> 应答结果
+
+| key | value类型 | 说明 | 示例 |
+| --- |:---:| ---:| -----:| -----:|
+| area| Area | 区域 | 参`数据类型 - 区域`| 
+
+#### 3. 根据节点等级获取区域：area.list_by_level
+
+> 请求参数
+
+| 参数名 | 类型 | 是否必须 | 说明 | 示例 |
+| --- |:---:| ---:| -----:| -----:|
+| level | String | Y | 区域等级 | "1"|
 
 
 > 应答结果
@@ -369,8 +489,38 @@
 | records |  List&lt;RecordItem&gt;| 历史视频列表 | 参`数据类型 - 录像`| 
 
 
+###(五)手机端崩溃日志
+
+#### 1. app异常记录：crash.log
 
 
+> 请求参数
+
+| 参数名 | 类型 | 是否必须 | 说明 | 示例 |
+| --- |:---:| ---:| -----:| -----:|
+| error_message | String | Y | app异常信息 | "NullPointException"|
+
+> 应答结果
+
+无
+
+
+###(六)版本
+
+#### 1. 检测更新：app.version
+
+
+> 请求参数
+
+| 参数名 | 类型 | 是否必须 | 说明 | 示例 |
+| --- |:---:| ---:| -----:| -----:|
+| version_num | String | Y | app版本 | "1.1.3"|
+
+> 应答结果
+
+| key | value类型 | 说明 | 示例 |
+| --- |:---:| ---:| -----:| -----:|
+| version |   Version | 版本信息 | 参`数据类型 - 版本`| 
 
 
 
